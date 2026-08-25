@@ -11,8 +11,8 @@ menu = st.sidebar.selectbox(
 
 if menu == "Home":
     st.title("Proyecto Aplicado en Streamlit")
+    st.image("Python_logo1.png", width=300)
     st.subheader("Módulo 1 - Python Fundamentals")
-    
     st.write("**Estudiante:** Luis Marco Cornejo Galarza")
     st.write("**Año:** 2026")
     st.markdown("Soy biólogo de formación, actualmente aplicando mis habilidades analíticas hacia la ingeniería de datos.")
