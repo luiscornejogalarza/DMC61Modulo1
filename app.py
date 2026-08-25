@@ -5,7 +5,7 @@ import numpy as np
 st.sidebar.title("Parámetros")
 menu = st.sidebar.selectbox(
     "Seleccione una sección:", 
-    ["Home", "Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4"]
+    ["Home", "Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4"])
     
 #Home
 
