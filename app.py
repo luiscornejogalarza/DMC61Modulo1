@@ -42,9 +42,9 @@ elif menu == "Ejercicio 1":
     if st.button("Agregar movimiento"):
         if concepto != "": 
             st.session_state.caja.append({"Concepto": concepto, "Tipo": tipo, "Valor": valor})
-            st.success("Movimiento registrado con éxito.")
+            st.success("Movimiento registrado.")
         else:
-            st.error("Por favor, ingresa un concepto válido antes de guardar.")
+            st.error("Ingresa un concepto válido.")
             
     # 4. Mostrar la tabla y los resultados
     st.markdown("### Tabla de Movimientos Registrados")
@@ -65,8 +65,8 @@ elif menu == "Ejercicio 1":
         
         # 5. Indicador del estado del flujo de caja
         if saldo_final >= 0:
-            st.success("El flujo de caja está **a favor**.")
+            st.success("El flujo de caja **Positivo**.")
         else:
-            st.error("El flujo de caja está **en contra**.")
+            st.error("El flujo de caja **en contra**.")
     else:
-        st.info("Aún no hay movimientos registrados. Ingresa un movimiento en la parte superior.")
+        st.info("Aún no hay movimientos registrados.")
