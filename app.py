@@ -139,8 +139,18 @@ elif menu == "Ejercicio 3":
             clasificacion = "Peso normal"
         elif imc < 30:
             clasificacion = "Sobrepeso"
-        else:
+        elif imc < 35:
             clasificacion = "Obesidad"
+        elif imc < 40:
+            clasificacion = "Obesidad grado II"
+        elif imc < 50:
+            clasificacion = "Obesidad Morbida"
+        elif imc < 60:
+            clasificacion = "Super obesidad"
+        elif imc < 66:
+            clasificacion = "Supersuper obesidad"
+        else:
+            clasificacion = "Triple obesidad"
             
         return {
             "imc": round(imc, 2),
