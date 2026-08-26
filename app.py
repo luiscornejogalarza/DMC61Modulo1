@@ -1,6 +1,8 @@
+#Librerias
 import streamlit as st
 import numpy as np
 import pandas as pd
+# SESSION STATE
 if 'caja' not in st.session_state:
     st.session_state.caja = []
 if 'registro_numpy' not in st.session_state:
@@ -206,7 +208,7 @@ elif menu == "Ejercicio 4":
     st.header("Ejercicio 4 - Clases y Operaciones CRUD")
     st.markdown("Gestión de datos utilizando la clase `Paciente` con lógica de clasificación avanzada para implementar las operaciones CRUD.")
     
-    # 1. Molde de la clase (Con la lógica de negocio enriquecida)
+    # Molde de la clase
     class Paciente:
         def __init__(self, nombre, peso_kg, altura_m):
             self.nombre = nombre
@@ -247,14 +249,10 @@ elif menu == "Ejercicio 4":
                 "Estado": self.clasificacion_imc()
             }
 
-    # Inicialización local de seguridad
-    if 'pacientes_crud' not in st.session_state:
-        st.session_state.pacientes_crud = {}
-
-    # 2. Uso de st.tabs para organizar las operaciones
+    # Uso de st.tabs para organizar las operaciones
     tab_crear, tab_leer, tab_actualizar, tab_eliminar = st.tabs(["Crear", "Leer", "Actualizar", "Eliminar"])
 
-    # --- C: CREAR ---
+    # CREAR 
     with tab_crear:
         st.subheader("Registrar Nuevo Paciente")
         c_nombre = st.text_input("Nombre del Paciente")
@@ -275,7 +273,7 @@ elif menu == "Ejercicio 4":
                 st.session_state.pacientes_crud[c_nombre] = nuevo_paciente
                 st.success(f"Paciente '{c_nombre}' creado con éxito.")
 
-    # --- R: LEER ---
+    # LEER
     with tab_leer:
         st.subheader("Base de Datos de Pacientes")
         if len(st.session_state.pacientes_crud) > 0:
@@ -284,7 +282,7 @@ elif menu == "Ejercicio 4":
         else:
             st.info("No hay pacientes registrados en el sistema.")
 
-    # --- U: ACTUALIZAR ---
+    # ACTUALIZAR
     with tab_actualizar:
         st.subheader("Modificar Datos Existentes")
         if len(st.session_state.pacientes_crud) > 0:
@@ -298,19 +296,19 @@ elif menu == "Ejercicio 4":
                 a_altura = st.number_input("Nueva Altura (m)", min_value=0.5, value=1.70)
                 
             if st.button("Actualizar Registro"):
-                # Sobrescribimos el objeto existente
+                # Sobreescribir el objeto
                 paciente_actualizado = Paciente(a_nombre, a_peso, a_altura)
                 st.session_state.pacientes_crud[a_nombre] = paciente_actualizado
                 
-                # Opcional pero recomendado: un pequeño mensaje temporal antes de recargar
+                # Mensaje temporal para avisar de la actualizacion
                 st.toast(f"Datos de '{a_nombre}' actualizados correctamente.") 
                 
-                # Forzamos la recarga inmediata de la interfaz
+                # Forzar la recarga de la interfaz
                 st.rerun() 
         else:
             st.info("Registre un paciente primero para poder actualizarlo.")
 
-    # --- D: ELIMINAR ---
+    # ELIMINAR
     with tab_eliminar:
         st.subheader("Dar de Baja a un Paciente")
         if len(st.session_state.pacientes_crud) > 0:
@@ -320,6 +318,6 @@ elif menu == "Ejercicio 4":
             if st.button("Eliminar Registro"):
                 del st.session_state.pacientes_crud[e_nombre]
                 st.success(f"Paciente '{e_nombre}' eliminado del sistema.")
-                st.rerun() # <--- Fuerza la recarga inmediata de la interfaz
+                st.rerun() 
         else:
             st.info("No hay pacientes para eliminar.")
