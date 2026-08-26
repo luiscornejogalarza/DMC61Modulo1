@@ -9,6 +9,8 @@ if 'historial_funciones' not in st.session_state:
     st.session_state.historial_funciones = []
 if 'servidores_crud' not in st.session_state:
     st.session_state.servidores_crud = {}
+if 'pacientes_crud' not in st.session_state:
+        st.session_state.pacientes_crud = {}
     
 # Sidebar
 st.sidebar.title("Módulos")
@@ -202,99 +204,115 @@ elif menu == "Ejercicio 3":
 
 elif menu == "Ejercicio 4":
     st.header("Ejercicio 4 - Clases y Operaciones CRUD")
-    st.markdown("Gestión de infraestructura simulando un sistema de monitoreo de servidores (Crear, Leer, Actualizar, Eliminar).")
+    st.markdown("Gestión de datos utilizando la clase `Paciente` con lógica de clasificación avanzada para implementar las operaciones CRUD.")
     
-    # 1. Molde de la clase (Orientación a Objetos)
-    class Servidor:
-        def __init__(self, nombre, tiempo_total_h, tiempo_caida_h, almacenamiento_total_gb, almacenamiento_usado_gb):
+    # 1. Molde de la clase (Con la lógica de negocio enriquecida)
+    class Paciente:
+        def __init__(self, nombre, peso_kg, altura_m):
             self.nombre = nombre
-            self.tiempo_total_h = tiempo_total_h
-            self.tiempo_caida_h = tiempo_caida_h
-            self.almacenamiento_total_gb = almacenamiento_total_gb
-            self.almacenamiento_usado_gb = almacenamiento_usado_gb
+            self.peso_kg = peso_kg
+            self.altura_m = altura_m
 
-        def calcular_disponibilidad(self):
-            if self.tiempo_total_h == 0: 
-                return 0
-            return ((self.tiempo_total_h - self.tiempo_caida_h) / self.tiempo_total_h) * 100
+        def calcular_imc(self):
+            return self.peso_kg / (self.altura_m ** 2)
+
+        def clasificacion_imc(self):
+            # Lógica de clasificación avanzada incorporada en el método de la clase
+            imc = self.calcular_imc()
+            if imc < 18.5:
+                return "Bajo peso"
+            elif imc < 25:
+                return "Peso normal"
+            elif imc < 30:
+                return "Sobrepeso"
+            elif imc < 35:
+                return "Obesidad"
+            elif imc < 40:
+                return "Obesidad grado II"
+            elif imc < 50:
+                return "Obesidad Morbida"
+            elif imc < 60:
+                return "Super obesidad"
+            elif imc < 66:
+                return "Supersuper obesidad"
+            else:
+                return "Triple obesidad"
 
         def resumen(self):
             return {
-                "Servidor": self.nombre,
-                "Disponibilidad (%)": round(self.calcular_disponibilidad(), 2),
-                "Almacen. Total (GB)": self.almacenamiento_total_gb,
-                "Almacen. Usado (GB)": self.almacenamiento_usado_gb
+                "Nombre": self.nombre,
+                "Peso (kg)": self.peso_kg,
+                "Altura (m)": self.altura_m,
+                "IMC": round(self.calcular_imc(), 2),
+                "Estado": self.clasificacion_imc()
             }
 
-    # 2. Uso de st.tabs para organizar las operaciones de manera profesional
+    # Inicialización local de seguridad
+    if 'pacientes_crud' not in st.session_state:
+        st.session_state.pacientes_crud = {}
+
+    # 2. Uso de st.tabs para organizar las operaciones
     tab_crear, tab_leer, tab_actualizar, tab_eliminar = st.tabs(["Crear", "Leer", "Actualizar", "Eliminar"])
 
     # --- C: CREAR ---
     with tab_crear:
-        st.subheader("Registrar Nuevo Servidor")
+        st.subheader("Registrar Nuevo Paciente")
+        c_nombre = st.text_input("Nombre del Paciente")
+        
         col_c1, col_c2 = st.columns(2)
         with col_c1:
-            c_nombre = st.text_input("Identificador del Servidor")
-            c_t_total = st.number_input("Tiempo total operando (h)", min_value=1.0, value=720.0)
+            c_peso = st.number_input("Peso (kg)", min_value=1.0, value=70.0)
         with col_c2:
-            c_t_caida = st.number_input("Tiempo de caída (h)", min_value=0.0, value=0.0)
-            c_a_total = st.number_input("Almacenamiento Total (GB)", min_value=1.0, value=1000.0)
-            c_a_usado = st.number_input("Almacenamiento Usado (GB)", min_value=0.0, value=100.0)
+            c_altura = st.number_input("Altura (m)", min_value=0.5, value=1.70)
             
         if st.button("Crear Registro"):
             if c_nombre == "":
-                st.error("El identificador no puede estar vacío.")
-            elif c_nombre in st.session_state.servidores_crud:
-                st.warning("El servidor ya existe. Use la pestaña 'Actualizar'.")
+                st.error("El nombre no puede estar vacío.")
+            elif c_nombre in st.session_state.pacientes_crud:
+                st.warning("El paciente ya existe. Use la pestaña 'Actualizar'.")
             else:
-                # Instanciamos el objeto y lo guardamos en el diccionario
-                nuevo_serv = Servidor(c_nombre, c_t_total, c_t_caida, c_a_total, c_a_usado)
-                st.session_state.servidores_crud[c_nombre] = nuevo_serv
-                st.success(f"Servidor '{c_nombre}' creado con éxito.")
+                nuevo_paciente = Paciente(c_nombre, c_peso, c_altura)
+                st.session_state.pacientes_crud[c_nombre] = nuevo_paciente
+                st.success(f"Paciente '{c_nombre}' creado con éxito.")
 
     # --- R: LEER ---
     with tab_leer:
-        st.subheader("Visualización de Infraestructura")
-        if len(st.session_state.servidores_crud) > 0:
-            # Extraemos el resumen de cada objeto y lo convertimos a DataFrame
-            datos = [obj.resumen() for obj in st.session_state.servidores_crud.values()]
-            df_servidores = pd.DataFrame(datos)
-            st.dataframe(df_servidores, use_container_width=True)
+        st.subheader("Base de Datos de Pacientes")
+        if len(st.session_state.pacientes_crud) > 0:
+            datos = [obj.resumen() for obj in st.session_state.pacientes_crud.values()]
+            st.dataframe(pd.DataFrame(datos), use_container_width=True)
         else:
-            st.info("No hay servidores registrados en la base de datos temporal.")
+            st.info("No hay pacientes registrados en el sistema.")
 
     # --- U: ACTUALIZAR ---
     with tab_actualizar:
-        st.subheader("Modificar Servidor Existente")
-        if len(st.session_state.servidores_crud) > 0:
-            opciones = list(st.session_state.servidores_crud.keys())
-            a_nombre = st.selectbox("Seleccione el servidor a actualizar:", opciones)
+        st.subheader("Modificar Datos Existentes")
+        if len(st.session_state.pacientes_crud) > 0:
+            opciones = list(st.session_state.pacientes_crud.keys())
+            a_nombre = st.selectbox("Seleccione el paciente a actualizar:", opciones)
             
             col_a1, col_a2 = st.columns(2)
             with col_a1:
-                a_t_total = st.number_input("Nuevo Tiempo total (h)", min_value=1.0, value=720.0)
-                a_t_caida = st.number_input("Nuevo Tiempo de caída (h)", min_value=0.0, value=0.0)
+                a_peso = st.number_input("Nuevo Peso (kg)", min_value=1.0, value=70.0)
             with col_a2:
-                a_a_total = st.number_input("Nuevo Almacenamiento Total (GB)", min_value=1.0, value=1000.0)
-                a_a_usado = st.number_input("Nuevo Almacenamiento Usado (GB)", min_value=0.0, value=150.0)
+                a_altura = st.number_input("Nueva Altura (m)", min_value=0.5, value=1.70)
                 
             if st.button("Actualizar Registro"):
-                # Sobrescribimos el objeto existente con los nuevos valores
-                serv_actualizado = Servidor(a_nombre, a_t_total, a_t_caida, a_a_total, a_a_usado)
-                st.session_state.servidores_crud[a_nombre] = serv_actualizado
+                paciente_actualizado = Paciente(a_nombre, a_peso, a_altura)
+                st.session_state.pacientes_crud[a_nombre] = paciente_actualizado
                 st.success(f"Datos de '{a_nombre}' actualizados correctamente.")
         else:
-            st.info("Registre un servidor primero para poder actualizarlo.")
+            st.info("Registre un paciente primero para poder actualizarlo.")
 
     # --- D: ELIMINAR ---
     with tab_eliminar:
-        st.subheader("Dar de Baja Servidor")
-        if len(st.session_state.servidores_crud) > 0:
-            opciones_e = list(st.session_state.servidores_crud.keys())
-            e_nombre = st.selectbox("Seleccione el servidor a eliminar:", opciones_e)
+        st.subheader("Dar de Baja a un Paciente")
+        if len(st.session_state.pacientes_crud) > 0:
+            opciones_e = list(st.session_state.pacientes_crud.keys())
+            e_nombre = st.selectbox("Seleccione el paciente a eliminar:", opciones_e)
             
             if st.button("Eliminar Registro"):
-                del st.session_state.servidores_crud[e_nombre]
-                st.success(f"Servidor '{e_nombre}' eliminado del sistema.")
+                del st.session_state.pacientes_crud[e_nombre]
+                st.success(f"Paciente '{e_nombre}' eliminado del sistema.")
         else:
-            st.info("No hay servidores para eliminar.")
+            st.info("No hay pacientes para eliminar.")
