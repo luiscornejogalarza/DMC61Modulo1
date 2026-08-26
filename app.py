@@ -104,13 +104,13 @@ elif menu == "Ejercicio 2":
         else:
             st.error("Ingresa el nombre del producto para continuar.")
             
-    # 4. La tabla en DataFrame actualizada
+    # La tabla en DataFrame actualizada
     st.markdown("### Base de Datos de Registros")
     if len(st.session_state.registro_numpy) > 0:
         # Requisito clave: Convertir la lista de arrays en un DataFrame
         df_numpy = pd.DataFrame(st.session_state.registro_numpy, columns=["Producto", "Categoría", "Precio", "Cantidad", "Total"])
         
-        # Mostramos el DataFrame en pantalla
+        # Mostrar el DataFrame en pantalla
         st.dataframe(df_numpy, use_container_width=True)
     else:
-        st.info("Aún no hay registros. Agrega el primer producto usando el formulario superior.")
+        st.info("No hay registros, agrega el primer producto usando el formulario.")
