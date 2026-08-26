@@ -172,7 +172,7 @@ elif menu == "Ejercicio 3":
     with col2:
         altura = st.number_input("Altura (m)", min_value=0.5, value=1.70, step=0.01)
         
-    # 4. Botón para ejecutar
+    # Botón para ejecutar
     if st.button("Ejecutar Cálculo"):
         try:
             # Ejecutar función y mostrar el resultado en pantalla
