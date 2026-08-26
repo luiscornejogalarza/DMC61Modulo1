@@ -314,5 +314,6 @@ elif menu == "Ejercicio 4":
             if st.button("Eliminar Registro"):
                 del st.session_state.pacientes_crud[e_nombre]
                 st.success(f"Paciente '{e_nombre}' eliminado del sistema.")
+                st.rerun() # <--- Fuerza la recarga inmediata de la interfaz
         else:
             st.info("No hay pacientes para eliminar.")
