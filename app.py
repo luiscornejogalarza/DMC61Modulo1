@@ -114,3 +114,72 @@ elif menu == "Ejercicio 2":
         st.dataframe(df_numpy, use_container_width=True)
     else:
         st.info("No hay registros, agrega el primer producto usando el formulario.")
+
+
+# EJERCICIO 3: Uso de funciones (Módulo Salud)
+
+elif menu == "Ejercicio 3":
+    st.header("Ejercicio 3 - Uso de Funciones")
+    st.markdown("Cálculo de indicadores de salud y registro histórico de pacientes.")
+    
+    # 1. Molde de la función de Salud (autocontenida para evitar errores de dependencias)
+    def calcular_imc(peso_kg, altura_m):
+        if peso_kg <= 0 or altura_m <= 0:
+            raise ValueError("El peso y la altura deben ser mayores que cero.")
+            
+        imc = peso_kg / (altura_m ** 2)
+        
+        if imc < 18.5:
+            clasificacion = "Bajo peso"
+        elif imc < 25:
+            clasificacion = "Peso normal"
+        elif imc < 30:
+            clasificacion = "Sobrepeso"
+        else:
+            clasificacion = "Obesidad"
+            
+        return {
+            "imc": round(imc, 2),
+            "clasificacion": clasificacion
+        }
+
+    # 2. Selector de función
+    funcion_seleccionada = st.selectbox("Seleccione la función a utilizar:", ["Calcular Índice de Masa Corporal (IMC)"])
+    
+    # 3. Widgets para ingresar parámetros
+    st.markdown("### Ingrese los datos del paciente:")
+    col1, col2 = st.columns(2)
+    with col1:
+        peso = st.number_input("Peso (kg)", min_value=1.0, value=70.0, step=0.5)
+    with col2:
+        altura = st.number_input("Altura (m)", min_value=0.5, value=1.70, step=0.01)
+        
+    # 4. Botón para ejecutar
+    if st.button("Ejecutar Cálculo"):
+        try:
+            # 5. Ejecutar función y mostrar el resultado en pantalla
+            resultado = calcular_imc(peso, altura)
+            st.success("Cálculo realizado con éxito.")
+            st.write("**Resultados obtenidos:**")
+            st.write(f"- IMC: {resultado['imc']}")
+            st.write(f"- Clasificación: {resultado['clasificacion']}")
+            
+            # 6. Guardar un histórico de resultados
+            nuevo_resultado = {
+                "Peso (kg)": peso,
+                "Altura (m)": altura,
+                "IMC": resultado['imc'],
+                "Clasificación": resultado['clasificacion']
+            }
+            st.session_state.historial_funciones.append(nuevo_resultado)
+            
+        except ValueError as e:
+            st.error(f"Error en el cálculo: {e}")
+            
+    # 7. Tabla histórica de resultados obtenidos
+    st.markdown("### Histórico de Cálculos")
+    if len(st.session_state.historial_funciones) > 0:
+        df_historial = pd.DataFrame(st.session_state.historial_funciones)
+        st.dataframe(df_historial, use_container_width=True)
+    else:
+        st.info("No hay cálculos registrados en el histórico aún.")
