@@ -68,5 +68,5 @@ elif menu == "Ejercicio 1":
             st.success("El flujo de caja **Positivo**.")
     else:
             st.error("El flujo de caja **en contra**.")
-    else:
+        else:
         st.info("Aún no hay movimientos registrados.")
