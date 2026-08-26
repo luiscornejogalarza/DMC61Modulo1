@@ -25,11 +25,11 @@ if menu == "Home":
 #Ejercicio 1 :Flujo de caja
 
 elif menu == "Ejercicio 1":
-    # 1. Breve descripción con markdown
+    # Descripción con 
     st.header("Ejercicio 1 - Flujo de Caja")
     st.markdown("Registro interactivo de movimientos financieros para calcular ingresos, gastos y el saldo final.") 
     
-    # 2. Widgets para ingresar los datos
+    # Widgets para ingresar los datos
     col1, col2, col3 = st.columns(3)
     with col1:
         concepto = st.text_input("Concepto del movimiento")
@@ -38,7 +38,7 @@ elif menu == "Ejercicio 1":
     with col3:
         valor = st.number_input("Valor", min_value=0.0, step=10.0)
         
-    # 3. Botón para agregar movimientos
+    # Botón para agregar movimientos
     if st.button("Agregar movimiento"):
         if concepto != "": 
             st.session_state.caja.append({"Concepto": concepto, "Tipo": tipo, "Valor": valor})
@@ -46,7 +46,7 @@ elif menu == "Ejercicio 1":
         else:
             st.error("Ingresa un concepto válido.")
             
-    # 4. Mostrar la tabla y los resultados
+    # Mostrar la tabla y los resultados
     st.markdown("### Tabla de Movimientos Registrados")
     if len(st.session_state.caja) > 0:
         df_caja = pd.DataFrame(st.session_state.caja)
@@ -63,10 +63,10 @@ elif menu == "Ejercicio 1":
         col_m2.metric("Total Gastos", f"${gastos:.2f}")
         col_m3.metric("Saldo Final", f"${saldo_final:.2f}")
         
-        # 5. Indicador del estado del flujo de caja
-        if saldo_final >= 0:
+        # Indicador del flujo de caja
+    if saldo_final >= 0:
             st.success("El flujo de caja **Positivo**.")
-        else:
+    else:
             st.error("El flujo de caja **en contra**.")
     else:
         st.info("Aún no hay movimientos registrados.")
