@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 if 'caja' not in st.session_state:
     st.session_state.caja = []
 
