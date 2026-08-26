@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 if 'caja' not in st.session_state:
     st.session_state.caja = []
+if 'registro_numpy' not in st.session_state:
+    st.session_state.registro_numpy = []
 
 #sidebar
 st.sidebar.title("Parámetros")
@@ -70,3 +72,45 @@ elif menu == "Ejercicio 1":
             st.error("El flujo de caja **en contra**.")
     else:
         st.info("Aún no hay movimientos registrados.")
+
+#  Ejercicio 2 – Registro con NumPy, arrays y DataFrame
+
+elif menu == "Ejercicio 2":
+    # Descripción
+    st.header("Ejercicio 2 - Registro con NumPy")
+    st.markdown("Formulario interactivo para registrar productos. Los datos se capturan en arreglos (arrays) de NumPy y se estructuran dinámicamente en un DataFrame.")
+    
+    # Formulario de ingreso de datos estructurado en columnas
+    col1, col2 = st.columns(2)
+    with col1:
+        producto = st.text_input("Nombre del producto")
+        precio = st.number_input("Precio unitario", min_value=0.0, step=1.0)
+    with col2:
+        categoria = st.selectbox("Categoría", ["Herramientas", "Insumos", "Servicios", "Otros"])
+        cantidad = st.number_input("Cantidad", min_value=1, step=1)
+        
+    # Botón para agregar nuevo registro
+    if st.button("Agregar Registro"):
+        if producto != "":
+            # Cálculo del total 
+            total = precio * cantidad
+            
+            # Almacenar la fila como un array de NumPy
+            nuevo_array = np.array([producto, categoria, precio, cantidad, total])
+            
+            # Guardamos el array en la memoria de la sesión
+            st.session_state.registro_numpy.append(nuevo_array)
+            st.success("Registro agregado.")
+        else:
+            st.error("Ingresa el nombre del producto para continuar.")
+            
+    # 4. La tabla en DataFrame actualizada
+    st.markdown("### Base de Datos de Registros")
+    if len(st.session_state.registro_numpy) > 0:
+        # Requisito clave: Convertir la lista de arrays en un DataFrame
+        df_numpy = pd.DataFrame(st.session_state.registro_numpy, columns=["Producto", "Categoría", "Precio", "Cantidad", "Total"])
+        
+        # Mostramos el DataFrame en pantalla
+        st.dataframe(df_numpy, use_container_width=True)
+    else:
+        st.info("Aún no hay registros. Agrega el primer producto usando el formulario superior.")
