@@ -64,9 +64,9 @@ elif menu == "Ejercicio 1":
         col_m3.metric("Saldo Final", f"${saldo_final:.2f}")
         
         # Indicador del flujo de caja
-    if saldo_final >= 0:
+        if saldo_final >= 0:
             st.success("El flujo de caja **Positivo**.")
-    else:
-            st.error("El flujo de caja **en contra**.")
         else:
+            st.error("El flujo de caja **en contra**.")
+    else:
         st.info("Aún no hay movimientos registrados.")
