@@ -298,9 +298,15 @@ elif menu == "Ejercicio 4":
                 a_altura = st.number_input("Nueva Altura (m)", min_value=0.5, value=1.70)
                 
             if st.button("Actualizar Registro"):
+                # Sobrescribimos el objeto existente
                 paciente_actualizado = Paciente(a_nombre, a_peso, a_altura)
                 st.session_state.pacientes_crud[a_nombre] = paciente_actualizado
-                st.success(f"Datos de '{a_nombre}' actualizados correctamente.")
+                
+                # Opcional pero recomendado: un pequeño mensaje temporal antes de recargar
+                st.toast(f"Datos de '{a_nombre}' actualizados correctamente.") 
+                
+                # Forzamos la recarga inmediata de la interfaz
+                st.rerun() 
         else:
             st.info("Registre un paciente primero para poder actualizarlo.")
 
