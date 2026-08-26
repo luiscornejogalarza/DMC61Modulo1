@@ -5,9 +5,13 @@ if 'caja' not in st.session_state:
     st.session_state.caja = []
 if 'registro_numpy' not in st.session_state:
     st.session_state.registro_numpy = []
-
-#sidebar
-st.sidebar.title("Parámetros")
+if 'historial_funciones' not in st.session_state:
+    st.session_state.historial_funciones = []
+if 'servidores_crud' not in st.session_state:
+    st.session_state.servidores_crud = {}
+    
+# Sidebar
+st.sidebar.title("Módulos")
 menu = st.sidebar.selectbox(
     "Seleccione una sección:", 
     ["Home", "Ejercicio 1", "Ejercicio 2", "Ejercicio 3", "Ejercicio 4"])
